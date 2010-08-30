@@ -1,0 +1,24 @@
+mBot
+wersja 0.01
+
+Autor: Mateusz "m4tx" M.
+www.m4tx.2ap.pl
+Licencja: Freeware
+
+mBot jest lingubotem, czyli programem komputerowym wzorowanym na komunikatorze, z którym mo¿na porozmawiaæ, jak z ¿ywym cz³owiekiem.
+
+Co on potrafi?
+- Interpretowaæ wiele ró¿nych pytañ, a tak¿e zdañ oznajmuj¹cych;
+- Odpowiedzieæ na pytanie typu "A Ty?";
+- Okreœliæ, czy u¿ytkownik siê powtarza;
+- Opowiadaæ cytaty.
+
+Co jest jeszcze do zrobienia?
+- Poprawienie, jak na razie, nielicznych b³êdów;
+- Wiêksza liczba zdañ, na które mBot mo¿e odpowiedzieæ;
+- Szerszy s³ownik;
+- Gry;
+- Wiêcej cytatów;
+- Dowcipy.
+
+Program jest rozpowszechniany na licencji Freeware, a wiêc mo¿esz go bez ¿adnych konsekwencji nieodp³atnie kopiowaæ i rozpowszechniaæ, jednak nie mo¿esz pobieraæ za to ¿adnych korzyœci finansowych, lub jakichkolwiek innych.

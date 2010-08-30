@@ -1,0 +1,23 @@
+1 24 "mBot.exe.Manifest"
+APPICON ICON "icon.ico"
+3 VERSIONINFO
+FILEVERSION 0,1,0,0
+PRODUCTVERSION 0,1,0,0
+FILETYPE 0x00000001L {
+	BLOCK "StringFileInfo" {
+		BLOCK "040904E4" {
+			VALUE "CompanyName", "m4tx\0"
+			VALUE "FileVersion", "0.01\0"
+			VALUE "FileDescription", "mBot\0"
+			VALUE "InternalName", "mBot\0"
+			VALUE "LegalCopyright", "(C) 2010. All rights reserved.\0"
+			VALUE "LegalTrademarks", "mBot\0"
+			VALUE "OriginalFilename", "mBot.exe\0"
+			VALUE "ProductName", "mBot\0"
+			VALUE "ProductVersion", "0.01\0"
+		}
+	}
+	BLOCK "VarFileInfo" {
+		VALUE "Translation", 0x0413, 1250
+	}
+}

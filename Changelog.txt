@@ -1,0 +1,2 @@
+Wersja 0.01 (30-07-2010)
+ - Pierwsza oficjalna wersja programu.

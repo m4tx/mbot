@@ -1,0 +1,39 @@
+# depslib dependency file v1.0
+1283105730 source:g:\!_m4tx\c++\projekty\mbot\mbot\mainsrc.cpp
+	"Includes.hpp"
+
+1282392841 g:\!_m4tx\c++\projekty\mbot\mbot\includes.hpp
+	<windows.h>
+	<time.h>
+	<stdio.h>
+	"MainFunctions.hpp"
+	"AnalyzeMessage.hpp"
+	"AdditionalAnalyzeMessage.hpp"
+
+1283105730 source:g:\!_m4tx\c++\projekty\mbot\mbot\mainrc.rc
+
+1283085680 source:g:\!_m4tx\c++\projekty\mbot\mbot\mainfunctions.cpp
+	"MainFunctions.hpp"
+
+1283071120 g:\!_m4tx\c++\projekty\mbot\mbot\mainfunctions.hpp
+	<windows.h>
+	<string>
+	<vector>
+
+1283247139 source:g:\!_m4tx\c++\projekty\mbot\mbot\analyzemessage.cpp
+	"AnalyzeMessage.hpp"
+
+1282383557 g:\!_m4tx\c++\projekty\mbot\mbot\analyzemessage.hpp
+	<string>
+	<vector>
+	"AdditionalAnalyzeMessage.hpp"
+
+1283246150 source:g:\!_m4tx\c++\projekty\mbot\mbot\additionalanalyzemessage.cpp
+	"AdditionalAnalyzeMessage.hpp"
+
+1283085784 g:\!_m4tx\c++\projekty\mbot\mbot\additionalanalyzemessage.hpp
+	<vector>
+	<stdio.h>
+	<time.h>
+	"MainFunctions.hpp"
+
