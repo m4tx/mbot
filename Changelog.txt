@@ -1,2 +1,11 @@
-Wersja 0.01 (30-07-2010)
+Wersja 0.01 (30-08-2010)
  - Pierwsza oficjalna wersja programu.
+
+Wersja 0.02 (15-09-2010)
+ - Dodano interpretacjê:
+  - Wulgaryzmów;
+  - Kilkudziesiêciu nowych zdañ.
+ - Dodano rozpoznawanie czasowników.
+ - Poprawiono interpretacjê niektórych zdañ.
+ - Poprawiono rozpoznawanie, czy u¿ytkownik siê powtarza.
+ - Dodano obcinanie spacji z pocz¹tku i koñca wypowiedzi u¿ytkownika w wysy³anej wiadomoœci.

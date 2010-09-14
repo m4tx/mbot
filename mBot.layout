@@ -2,30 +2,30 @@
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
 	<File name="AdditionalAnalyzeMessage.cpp" open="1" top="0" tabpos="9">
-		<Cursor position="3720" topLine="300" />
+		<Cursor position="4283" topLine="132" />
 	</File>
 	<File name="AdditionalAnalyzeMessage.hpp" open="1" top="0" tabpos="8">
-		<Cursor position="519" topLine="0" />
+		<Cursor position="549" topLine="0" />
 	</File>
-	<File name="AnalyzeMessage.cpp" open="1" top="0" tabpos="7">
-		<Cursor position="8772" topLine="179" />
+	<File name="AnalyzeMessage.cpp" open="1" top="1" tabpos="7">
+		<Cursor position="10212" topLine="199" />
 	</File>
 	<File name="AnalyzeMessage.hpp" open="1" top="0" tabpos="6">
 		<Cursor position="94" topLine="0" />
 	</File>
 	<File name="Includes.hpp" open="1" top="0" tabpos="2">
-		<Cursor position="237" topLine="0" />
+		<Cursor position="44" topLine="0" />
 	</File>
 	<File name="MainFunctions.cpp" open="1" top="0" tabpos="4">
-		<Cursor position="9667" topLine="255" />
+		<Cursor position="2841" topLine="60" />
 	</File>
 	<File name="MainFunctions.hpp" open="1" top="0" tabpos="5">
-		<Cursor position="641" topLine="0" />
+		<Cursor position="309" topLine="0" />
 	</File>
 	<File name="MainRc.rc" open="1" top="0" tabpos="3">
-		<Cursor position="33" topLine="0" />
+		<Cursor position="0" topLine="0" />
 	</File>
 	<File name="MainSrc.cpp" open="1" top="0" tabpos="1">
-		<Cursor position="1391" topLine="138" />
+		<Cursor position="4773" topLine="126" />
 	</File>
 </CodeBlocks_layout_file>

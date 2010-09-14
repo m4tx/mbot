@@ -1,4 +1,7 @@
 #include "Includes.hpp"
+#include <windows.h> // WinAPI
+
+#define BS_COMMANDLINK 0x0000000E
 
 CONST CHAR ClassName[] = "mBot";
 MSG Message;
@@ -46,7 +49,7 @@ int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
     MainFormHwnd = CreateWindowEx (
         NULL,
         ClassName,
-        "mBot 0.01",
+        "mBot 0.02",
         WS_SYSMENU | WS_MINIMIZEBOX,
         CW_USEDEFAULT,
         CW_USEDEFAULT,
@@ -58,7 +61,19 @@ int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
         NULL);
 
     // Przycisk "Wyœlij"
-    bSend = CreateButton(MainFormHwnd, hInstance, (char*)"Wyœlij", 380, 330, 100, 30);
+    bSend = CreateWindowEx (
+        NULL,
+        "BUTTON",
+        "Wyœlij",
+        WS_CHILD | WS_VISIBLE,
+        380,
+        330,
+        100,
+        30,
+        MainFormHwnd,
+        NULL,
+        hInstance,
+        NULL);
     SendMessage(bSend, WM_SETFONT, hNormalFont, 0);
 
     // Pole edycyjne wiadomoœci
@@ -77,19 +92,44 @@ int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
         DEFAULT_QUALITY,
         FF_DONTCARE,
         NULL);
-    eMessage = CreateEditBox (MainFormHwnd, hInstance, 10, 330, 350, 30, false, false);
+    eMessage = CreateWindowEx (
+        WS_EX_CLIENTEDGE,
+        "EDIT",
+        NULL,
+        WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL,
+        10,
+        330,
+        350,
+        30,
+        MainFormHwnd,
+        NULL,
+        hInstance,
+        NULL);
     SendMessage(eMessage, WM_SETFONT, (WPARAM) eMessageFont, 0);
     OldeMessageWndProc = (WNDPROC) SetWindowLong (eMessage, GWL_WNDPROC, (LONG)eMessageWndProc);
 
     // Pole rozmowy
-    eConversation = CreateEditBox (MainFormHwnd, hInstance, 10, 10, 470, 300, true, true);
+    eConversation = CreateWindowEx (
+        WS_EX_CLIENTEDGE,
+        "EDIT",
+        "",
+        WS_CHILD | WS_VISIBLE | WS_VSCROLL | ES_MULTILINE | ES_AUTOVSCROLL | ES_READONLY,
+        10,
+        10,
+        470,
+        300,
+        MainFormHwnd,
+        NULL,
+        hInstance,
+        NULL);
     SendMessage(eConversation, WM_SETFONT, hNormalFont, 0);
 
     //==================================================================================================
 
     InitTextsArray();
+    srand (time(0));
 
-    if (MainFormHwnd == NULL)
+    if (MainFormHwnd == NULL || bSend == NULL || eMessage == NULL || eConversation == NULL)
     {
         MessageBox (NULL, "Nie mo¿na utworzyæ okna: b³¹d przy tworzeniu!", "B³¹d", MB_ICONERROR | MB_OK);
         return 1;
@@ -97,8 +137,6 @@ int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 
     ShowWindow (MainFormHwnd, nCmdShow);
     UpdateWindow (MainFormHwnd);
-
-    srand (time(0));
 
     // Pêtla komunikatów
     while (GetMessage (&Message, NULL, 0, 0))
@@ -113,7 +151,7 @@ void SendMessage ()
 {
     if (GetWndText(eMessage) != "")
     {
-        SetWindowText (eConversation, std::string (GetWndText(eConversation) + "Ja >> " + GetWndText(eMessage) + "\r\n").c_str());
+        SetWindowText (eConversation, std::string(GetWndText(eConversation) + "Ja >> " + trimstr(GetWndText(eMessage)) + "\r\n").c_str());
         std::string Msg;
         Msg = AnalyzeMessage(GetWndText(eMessage));
 
@@ -128,8 +166,8 @@ void SendMessage ()
                 }
                 else if (i == Msg.length()-1)
                     SetWindowText (eConversation, std::string (GetWndText(eConversation) + "mBot >> " + Msg.substr(PreviousLine, i-PreviousLine+1) + "\r\n").c_str());
-            SendMessage(eConversation, LOWORD(WM_VSCROLL), SB_BOTTOM, 0);
         }
+        SendMessage(eConversation, LOWORD(WM_VSCROLL), SB_BOTTOM, 0);
         SetWindowText (eMessage, "");
     }
 }
@@ -148,11 +186,11 @@ LRESULT CALLBACK WndProc (HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
         {
             HDC hEdit = (HDC)wParam;
 
-            SetTextColor( hEdit, RGB(0, 0, 0) );
-            SetBkColor ( hEdit, RGB(255, 255, 255) );
+            SetTextColor(hEdit, RGB(0, 0, 0));
+            SetBkColor (hEdit, RGB (255, 255, 255));
 
             // Do not return a brush created by CreateSolidBrush(...) because you'll get a memory leak
-            return (INT_PTR)GetStockObject( WHITE_BRUSH );
+            return (INT_PTR)GetStockObject (WHITE_BRUSH);
         }
 
         case WM_CLOSE:

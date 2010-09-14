@@ -5,6 +5,7 @@ std::vector<std::string> Words;
 std::vector<std::string> PreviousWords;
 
 int TwondQuestionIteration = 0; // Zmienna pomocnicza. Po przypisaniu do niej wartoœci 2 zmienna IsQuestion jest przestawiana na false.
+int TwondBotQuestionIteration = 0; // Zmienna pomocnicza. Po przypisaniu do niej wartoœci 3 zmienna BotQuestion jest przestawiana na 0.
 
 bool IsWelcome = false; // Czy u¿ytkownik siê ju¿ przywita³.
 bool IsWassUp = false; // Czy bot siê ju¿ pyta³ "Co u Ciebie?"
@@ -15,8 +16,8 @@ bool IsInterrogativeSentence = false; // Zdanie pytaj¹ce
 
 std::string AnalyzeAndYou (std::vector<std::string> Words);
 
-// Zmienna przechowuj¹ca aktualne pytanie, które zada³ bot. Zmienna jest u¿ywana do odpowiadania na pytanie "A Ty?".
-// 0 - pytanie niestandardowe lub brak pytania.; 1 - zarezerwowane.; 2 - Co u Ciebie?
+// Zmienna przechowuj¹ca aktualn¹ wypowiedŸ, które zada³ bot. Zmienna jest u¿ywana do odpowiadania na pytanie "A Ty?", choæ nie tylko.
+// 0 - pytanie niestandardowe lub brak pytania.; 1 - zarezerwowane.; 2 - Co u Ciebie?; 3 - Przegl¹da³em Twój dysk twardy;
 short int BotQuestion = 0;
 
 std::string AnalyzeMessage (std::string src)
@@ -31,6 +32,14 @@ std::string AnalyzeMessage (std::string src)
         TwondQuestionIteration += 1;
         if (TwondQuestionIteration == 2)
             IsQuestion = false;
+    }
+
+    // Przypisanie zmiennej BotQuestion wartoœci false, jêzeli tak ma byæ.
+    if (BotQuestion)
+    {
+        TwondBotQuestionIteration += 1;
+        if (TwondBotQuestionIteration == 3)
+            BotQuestion = false;
     }
 
     // Usuniêcie z wypowiedzi u¿ytkownika niepotrzebnych znaków.
@@ -52,10 +61,10 @@ std::string AnalyzeMessage (std::string src)
         }
     }
 
-
-
     // Usuniêcie z wypowiedzi u¿ytkownika niepotrzebnych znaków.
     src = DeleteUnnecessaryChars (src);
+    if (src[0] == '\0')
+        return "";
 
     // Przerobienie wypowiedzi u¿ytkownika w std::string na std::vector.
     previous_i = 0;
@@ -73,26 +82,37 @@ std::string AnalyzeMessage (std::string src)
         }
     }
 
-    // Sprawdzenie, czy u¿ytkownik siê nie powtarza.
-    bool IsRepetition = false;
-    for (unsigned int i = 0; i < PreviousWords.size(); i++)
-        if (VectSrch(Words, PreviousWords[i]))
-            IsRepetition = true;
-        else
-        {
-            IsRepetition = false;
-            break;
-        }
-    if (IsRepetition)
-        return RandomText(18);
+    if ((!VectSrch2(Words, "dowcip") && VectSrch2(Words, "cip")) ||
+        VectSrch2(Words, "kurw") || VectSrch2(Words, "huj") || VectSrch2(Words, "pizd") || VectSrch2(Words, "pind") ||
+        VectSrch2(Words, "pierdo") || VectSrch2(Words, "pierdzie") || VectSrch2(Words, "jeb") || VectSrch2(Words, "rucha") ||
+        VectSrch2(Words, "fiut") || VectSrch2(Words, "dup") || VectSrch2(Words, "pieprzy") || VectSrch2(Words, "pieprzen") ||
+        VectSrch2(Words, "zarabis")  || VectSrch2(Words, "sukinsyn"))
+        return RandomText(30);
 
     // Sprawdzenie, czy zdanie jest pytaniem.
     if (src[src.length()-1] == '?' || Words[0] == "czy")
         IsInterrogativeSentence = true;
     else
         IsInterrogativeSentence = false;
-
     DeleteQuestionMark(Words);
+
+    // Sprawdzenie, czy u¿ytkownik siê nie powtarza.
+    if (PreviousWords.size() == Words.size())
+    {
+        bool IsRepetition = false;
+        for (unsigned int i = 0; i < PreviousWords.size(); i++)
+            //if (VectSrch(Words, PreviousWords[i]))
+            if (PreviousWords[i] == Words[i])
+                IsRepetition = true;
+            else
+            {
+                IsRepetition = false;
+                goto IsRep;
+            }
+        IsRep: if (IsRepetition)
+            return RandomText(18);
+    }
+
     if (VectSrch(Words, "a") && (VectSrch(Words, "ty") || VectSrch(Words, "ciebie")))
     {
         if (Words.size() == 2)
@@ -114,17 +134,12 @@ std::string AnalyzeMessage (std::string src)
         PreviousWords.push_back (Words[i]);
 
     // W³aœciwa analiza wiadomoœci.
-    if ((!VectSrch2(Words, "dowcip") && VectSrch2(Words, "cip")) ||
-        VectSrch2(Words, "kurw") || VectSrch2(Words, "huj") || VectSrch2(Words, "pizd") || VectSrch2(Words, "pind") ||
-        VectSrch2(Words, "pierdo") || VectSrch2(Words, "pierdzie") || VectSrch2(Words, "jeb") || VectSrch2(Words, "rucha") ||
-        VectSrch2(Words, "fiut") || VectSrch2(Words, "dup") || VectSrch2(Words, "pieprzy") || VectSrch2(Words, "pieprzen") ||
-        VectSrch2(Words, "zarabis")  || VectSrch2(Words, "sukinsyn"))
-        return RandomText(30);
-    else if (VectSrch(Words, "witaj") || VectSrch(Words, "czesc") || VectSrch(Words, "elo") ||
+    if (VectSrch(Words, "witaj") || VectSrch(Words, "czesc") || VectSrch(Words, "elo") ||
              VectSrch(Words, "siema") || VectSrch(Words, "yo") || VectSrch(Words, "hej") ||
              VectSrch(Words, "hejka") || VectSrch(Words, "siemano") || VectSrch(Words, "cze") ||
              VectSrch(Words, "czolem") || VectSrch(Words, "witam") || VectSrch(Words, "jol") ||
              (VectSrch(Words, "dzien") && VectSrch(Words, "dobry")))
+    {
         if (!IsWelcome)
         {
             IsWelcome = true;
@@ -140,6 +155,7 @@ std::string AnalyzeMessage (std::string src)
         }
         else
             return RandomText(2);
+    }
     else if (VectSrch(Words, "nara") || VectSrch(Words, "nq") || VectSrch(Words, "bb") ||
              VectSrch(Words, "narka") || VectSrch(Words, "narq") || (Words.size() > 1 && ((VectSrch(Words, "do") &&
              VectSrch(Words, "widzenia")) || (VectSrch(Words, "na") && VectSrch(Words, "razie")))))
@@ -169,6 +185,13 @@ std::string AnalyzeMessage (std::string src)
             }
             else
                 return RandomText (12);
+    else if (((VectSrch(Words, "piekna") || VectSrch(Words, "ladna") || VectSrch(Words, "fajna") || VectSrch(Words, "super")) &&
+             VectSrch(Words, "pogoda")) || (VectSrch(Words, "slonce") && VectSrch(Words, "swieci")))
+        return RandomText(42);
+    else if (((VectSrch(Words, "brzydka") || VectSrch(Words, "lipna") || VectSrch(Words, "beznadziejna") || VectSrch(Words, "straszna")) &&
+             VectSrch(Words, "pogoda")) || ((VectSrch(Words, "ciemne") || VectSrch(Words, "czarne") || VectSrch(Words, "granatowe")) &&
+             VectSrch(Words, "chmury")))
+        return RandomText(43);
     else if ((VectSrch(Words, "mam") && (VectSrch(Words, "pytan") || VectSrch(Words, "pytanie") || VectSrch(Words, "pytania"))) ||
              ((VectSrch(Words, "odpowiedzial") || VectSrch(Words, "odpowiedziec") || VectSrch(Words, "odpowiedz")) &&
               (VectSrch(Words, "pytan") || VectSrch(Words, "pytanie") || VectSrch(Words, "pytania"))))
@@ -187,10 +210,16 @@ std::string AnalyzeMessage (std::string src)
              (VectSrch(Words, "imie") || VectSrch(Words, "mbot") || VectSrch(Words, "nazywasz") || VectSrch(Words, "nazwano")))
         return RandomText(22);
     else if (VectSrch(Words, "co") && (VectSrch(Words, "robisz") || VectSrch(Words, "robiles")))
+    {
+        BotQuestion = 3;
         return RandomText(27);
-    else if ((VectSrch(Words, "jestem") || VectSrch(Words, "mam") || VectSrch(Words, "miewam")) && (VectSrch(Words, "wysmienity") || VectSrch(Words, "wysmienitym") ||
-             VectSrch(Words, "swietny") || VectSrch(Words, "swietnym") || VectSrch(Words, "dobry") || VectSrch(Words, "dobrym")) &&
-             (VectSrch(Words, "humor") || VectSrch(Words, "humorze")))
+    }
+    else if (VectSrch(Words, "co") && (VectSrch(Words, "zobaczyles") || VectSrch(Words, "widziales")) && BotQuestion == 3)
+        return RandomText(37);
+    else if ((VectSrch(Words, "jestem") && VectSrch(Words, "w") && (VectSrch(Words, "wysmienitym") ||  VectSrch(Words, "swietnym") ||
+             VectSrch(Words, "dobrym") || VectSrch(Words, "wspanialym")) && VectSrch(Words, "humorze")) ||
+             ((VectSrch(Words, "mam") || VectSrch(Words, "miewam")) && (VectSrch(Words, "wysmienity") || VectSrch(Words, "swietny") ||
+             VectSrch(Words, "dobry")) && VectSrch(Words, "humor")))
         return RandomText(17);
     else if (VectSrch(Words, "lubisz"))
         return RandomText(13);
@@ -199,8 +228,12 @@ std::string AnalyzeMessage (std::string src)
     else if (VectSrch(Words, "kto") && VectSrch(Words, "cie") &&
              (VectSrch(Words, "stworzyl") || VectSrch(Words, "napisal")))
         return RandomText(23);
-    else if (VectSrch(Words, "kim") && VectSrch(Words, "jestes"))
+    else if ((VectSrch(Words, "kim") || VectSrch(Words, "czym")) && VectSrch(Words, "jestes"))
         return RandomText(24);
+    else if (VectSrch(Words, "znasz"))
+        return RandomText(40);
+    else if (VectSrch(Words, "mbot") && VectSrch(Words, "to") && (VectSrch(Words, "imie") || VectSrch(Words, "nazwisko")))
+        return RandomText(41);
     else if ((VectSrch(Words, "co") || VectSrch(Words, "czym") || VectSrch(Words, "kim")) &&
              (VectSrch(Words, "jest") || VectSrch(Words, "to") || VectSrch(Words, "znaczy")))
     {
@@ -238,11 +271,19 @@ std::string AnalyzeMessage (std::string src)
     else if (VectSrch(Words, "umiesz") || VectSrch(Words, "potrafisz") ||
              VectSrch(Words, "umialbys") || VectSrch(Words, "potrafilbys"))
         return RandomText(14);
+    else if (VectSrch(Words, "palisz"))
+        return RandomText(34);
+    else if (VectSrch(Words, "pijesz"))
+        return RandomText(35);
+    else if (VectSrch(Words, "cpasz"))
+        return RandomText(36);
     else if (((VectSrch(Words, "byles") || VectSrch(Words, "przebywales") || VectSrch(Words, "bywales")) &&
               VectSrch(Words, "w")) || ((VectSrch(Words, "wyjezdzales") || VectSrch(Words, "jezdziles")) &&
               VectSrch(Words, "do")) || ((VectSrch(Words, "czys") || VectSrch(Words, "czy")) &&
               VectSrch(Words, "byl") && VectSrch(Words, "w")))
         return RandomText(33);
+    else if (VectSrch(Words, "masz") && VectSrch(Words, "cos") && VectSrch(Words, "wspolnego"))
+        return RandomText(38);
     else if (VectSrch(Words, "szkoda"))
         return RandomText(8);
     else if (VectSrch(Words, "niestety"))
@@ -255,14 +296,31 @@ std::string AnalyzeMessage (std::string src)
     else if ((VectSrch(Words, "zapodaj") || VectSrch(Words, "daj") || VectSrch(Words, "opowiedz") || VectSrch(Words, "napisz")) &&
              (VectSrch(Words, "cytat") || VectSrch(Words, "cytata") || VectSrch(Words, "cytatka")))
         return RandomText(31);
-    else if ((VectSrch(Words, "jak") && VectSrch(Words, "dlugo") && (VectSrch(Words, "zyjesz") || VectSrch(Words, "istniejesz"))) ||
-             (VectSrch(Words, "ile") && (VectSrch(Words, "zyjesz") || VectSrch(Words, "istniejesz"))) || (VectSrch(Words, "dlugo") &&
-             (VectSrch(Words, "zyjesz") || VectSrch(Words, "istniejesz"))))
+    else if (((VectSrch(Words, "jak") && VectSrch(Words, "dlugo")) || VectSrch(Words, "ile") || VectSrch(Words, "dlugo")) &&
+              (VectSrch(Words, "zyjesz") || VectSrch(Words, "istniejesz")))
         return "Moje pierwsze uruchomienie nast¹pi³o 20 sierpnia 2010 roku, co oznacza, ¿e istniejê ju¿ " + CalculateLifeExpectancy() + " dni.";
     else if (IsQuestion)
         return RandomText(7);
-    else if (VectSrch(Words, "nic"))
+    else if (VectSrch(Words, "nic") || VectSrch(Words, "hm") || VectSrch(Words, "hmm") || VectSrch(Words, "hmmm") ||
+             VectSrch(Words, "xp") || VectSrch(Words, "xd") || (VectSrch(Words, "a") && VectSrch(Words, "ten")) ||
+             (VectSrch(Words, "ciesze") && VectSrch(Words, "sie")))
         return "";
+    else if (VectSrch2AtEnd(Words, "sz"))
+    {
+        for (unsigned int i = 0; i < Words.size(); i++)
+            if (Words[i] == "czy" || Words[i] == "ty" || Words[i] == "mi" || Words[i] == "to")
+            {
+                Words.erase (Words.begin() + i);
+                i--;
+            }
+
+        if (Words.size() < 3 && Words.size() > 0)
+            return "Nie.";
+        else if (IsInterrogativeSentence)
+            return RandomText(5);
+        else
+            return "";
+    }
     else if (IsInterrogativeSentence)
         return RandomText(5);
     else if (!IsInterrogativeSentence)
@@ -277,8 +335,11 @@ std::string AnalyzeAndYou (std::vector<std::string> Words)
         return RandomText(21);
     else if (VectSrch(Words, "interesuje") && VectSrch(Words, "sie"))
         return RandomText(20);
-    else if ((VectSrch(Words, "nazywam") || VectSrch(Words, "mam")) && (VectSrch(Words, "sie") || VectSrch(Words, "imie")))
+    else if ((VectSrch(Words, "nazywam") || VectSrch(Words, "sie")) || (VectSrch(Words, "mam") && VectSrch(Words, "imie")))
         return RandomText(21);
+    else if (((VectSrch(Words, "nazywam") || VectSrch(Words, "sie")) || (VectSrch(Words, "mam") && VectSrch(Words, "imie"))) &&
+             (VectSrch(Words, "bo") || VectSrch(Words, "poniewaz") || VectSrch(Words, "gdyz") || VectSrch(Words, "iz")))
+        return RandomText(22);
     else if ((VectSrch(Words, "nazywam") || VectSrch(Words, "mam")) && (VectSrch(Words, "sie") || VectSrch(Words, "imie")) &&
         (VectSrch(Words, "poniewaz") || VectSrch(Words, "bo")))
         return RandomText(22);
@@ -298,6 +359,34 @@ std::string AnalyzeAndYou (std::vector<std::string> Words)
         return RandomText(24);
     else if (VectSrch(Words, "umiem") || VectSrch(Words, "potrafie"))
         return RandomText(14);
+    else if ((VectSrch(Words, "jestem") && VectSrch(Words, "w") && (VectSrch(Words, "wysmienitym") ||  VectSrch(Words, "swietnym") ||
+             VectSrch(Words, "dobrym") || VectSrch(Words, "wspanialym")) && VectSrch(Words, "humorze")) ||
+             ((VectSrch(Words, "mam") || VectSrch(Words, "miewam")) && (VectSrch(Words, "wysmienity") || VectSrch(Words, "swietny") ||
+             VectSrch(Words, "dobry")) && VectSrch(Words, "humor")))
+        return RandomText(39);
+    else if (VectSrch(Words, "znam"))
+        return RandomText(40);
+    else if (VectSrch(Words, "wiem") && VectSrch(Words, "to") && VectSrch(Words, "z"))
+        return RandomText(25);
+    else if (VectSrch(Words, "mam") && VectSrch(Words, "baze") && (VectSrch(Words, "w") || VectSrch(Words, "na")))
+        return RandomText(26);
+    else if (VectSrch(Words, "pale"))
+        return RandomText(34);
+    else if (VectSrch(Words, "pije"))
+        return RandomText(35);
+    else if (VectSrch(Words, "cpam"))
+        return RandomText(36);
+    else if (((VectSrch(Words, "bylem") || VectSrch(Words, "przebywalem") || VectSrch(Words, "bywalem")) &&
+              VectSrch(Words, "w")) || ((VectSrch(Words, "wyjezdzalem") || VectSrch(Words, "jezdzilem")) &&
+              VectSrch(Words, "do")))
+        return RandomText(33);
+    else if (VectSrch(Words, "mam") && VectSrch(Words, "cos") && VectSrch(Words, "wspolnego"))
+        return RandomText(38);
+    else if ((VectSrch(Words, "zapodam") || VectSrch(Words, "dam") || VectSrch(Words, "opowiem") || VectSrch(Words, "napisze")) &&
+             (VectSrch(Words, "cytat") || VectSrch(Words, "cytata") || VectSrch(Words, "cytatka")))
+        return RandomText(31);
+    else if (VectSrch(Words, "zyje") || VectSrch(Words, "istnieje"))
+        return "Moje pierwsze uruchomienie nast¹pi³o 20 sierpnia 2010 roku, co oznacza, ¿e istniejê ju¿ " + CalculateLifeExpectancy() + " dni.";
     else if (BotQuestion == 2)
         return RandomText(4);
     else

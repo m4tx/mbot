@@ -11,6 +11,7 @@ std::string DeleteUnnecessaryChars2 (std::string src);
 int SearchInVector (std::vector<std::string> src, std::string text);
 bool VectSrch (std::vector<std::string> src, std::string text);
 bool VectSrch2 (std::vector<std::string> src, std::string text);
+bool VectSrch2AtEnd (std::vector<std::string> src, std::string text);
 std::string CalculateLifeExpectancy ();
 void InitTextsArray ();
 std::string RandomText (int Text);

@@ -1,84 +1,7 @@
 #include "MainFunctions.hpp"
 
-HWND CreateButton (HWND ParentHwnd, HINSTANCE hInstance, char* Text, int x, int y, int w, int h)
-{
-    return CreateWindowEx (
-        NULL,
-        "BUTTON",
-        Text,
-        WS_CHILD | WS_VISIBLE,
-        x,
-        y,
-        w,
-        h,
-        ParentHwnd,
-        NULL,
-        hInstance,
-        NULL);
-}
-
 //==================================================================================================
 
-HWND CreateEditBox (HWND ParentHwnd, HINSTANCE hInstance, int x, int y, int w, int h, bool Multiline, bool Readonly)
-{
-    if (Multiline && !Readonly)
-        return CreateWindowEx (
-            WS_EX_CLIENTEDGE,
-            "EDIT",
-            NULL,
-            WS_CHILD | WS_VISIBLE | WS_VSCROLL | ES_MULTILINE | ES_AUTOVSCROLL,
-            x,
-            y,
-            w,
-            h,
-            ParentHwnd,
-            NULL,
-            hInstance,
-            NULL);
-    else if (!Multiline && !Readonly)
-        return CreateWindowEx (
-            WS_EX_CLIENTEDGE,
-            "EDIT",
-            NULL,
-            WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL,
-            x,
-            y,
-            w,
-            h,
-            ParentHwnd,
-            NULL,
-            hInstance,
-            NULL);
-    else if (Multiline && Readonly)
-        return CreateWindowEx (
-            WS_EX_CLIENTEDGE,
-            "EDIT",
-            NULL,
-            WS_CHILD | WS_VISIBLE | WS_VSCROLL | ES_MULTILINE | ES_AUTOVSCROLL | ES_READONLY,
-            x,
-            y,
-            w,
-            h,
-            ParentHwnd,
-            NULL,
-            hInstance,
-            NULL);
-    else if (!Multiline && Readonly)
-        return CreateWindowEx (
-            WS_EX_CLIENTEDGE,
-            "EDIT",
-            NULL,
-            WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL | ES_READONLY,
-            x,
-            y,
-            w,
-            h,
-            ParentHwnd,
-            NULL,
-            hInstance,
-            NULL);
-    else return NULL; // Å»eby siÄ™ kompilator nie darÅ‚
-}
 
 //==================================================================================================
 
@@ -142,7 +65,7 @@ std::string StrToLower (std::string src)
 
 //==================================================================================================
 
-void trim( std::string& str )
+void trim (std::string& str)
 {
     std::string::size_type pos = str.find_last_not_of( ' ' );
     if (pos != std::string::npos)
@@ -156,11 +79,17 @@ void trim( std::string& str )
         str.erase( str.begin(), str.end() );
 }
 
+std::string trimstr (std::string str)
+{
+    std::string temp = str;
+    trim (temp);
+    return temp;
+}
+
 //==================================================================================================
 
 void DeleteSpecialChars( std::string& src )
 {
-    loop:
     for (unsigned int i = 0; i < src.length(); i++)
             if (!(src[i] >= 97 && src[i] <= 122) && // Pomiêdzy a a z
                 !(src[i] == '¹') &&
@@ -174,27 +103,14 @@ void DeleteSpecialChars( std::string& src )
                 !(src[i] == '¿') &&
                 !(src[i] == '?') &&
                 !(src[i] == ' '))
-                    src = src.erase(i, 1);
-
-    for (unsigned int i = 0; i < src.length(); i++)
-            if (!(src[i] >= 97 && src[i] <= 122) && // Pomiêdzy a a z
-                !(src[i] == '¹') &&
-                !(src[i] == 'æ') &&
-                !(src[i] == 'ê') &&
-                !(src[i] == '³') &&
-                !(src[i] == 'ñ') &&
-                !(src[i] == 'ó') &&
-                !(src[i] == 'œ') &&
-                !(src[i] == 'Ÿ') &&
-                !(src[i] == '¿') &&
-                !(src[i] == '?') &&
-                !(src[i] == ' '))
-                    goto loop;
+            {
+                src = src.erase(i, 1);
+                i--;
+            }
 }
 
 void DeleteSpecialChars2 (std::string& src)
 {
-    loop:
     for (unsigned int i = 0; i < src.length(); i++)
             if (!(src[i] >= 65 && src[i] <= 90) && // Pomiêdzy A a Z
                 !(src[i] >= 97 && src[i] <= 122) && // Pomiêdzy a a z
@@ -218,32 +134,11 @@ void DeleteSpecialChars2 (std::string& src)
                 !(src[i] == '¯') &&
                 !(src[i] == '?') &&
                 !(src[i] == ' '))
-                    src = src.erase(i, 1);
+            {
+                src = src.erase(i, 1);
+                i--;
+            }
 
-    for (unsigned int i = 0; i < src.length(); i++)
-            if (!(src[i] >= 65 && src[i] <= 90) && // Pomiêdzy A a Z
-                !(src[i] >= 97 && src[i] <= 122) && // Pomiêdzy a a z
-                !(src[i] == '¹') &&
-                !(src[i] == 'æ') &&
-                !(src[i] == 'ê') &&
-                !(src[i] == '³') &&
-                !(src[i] == 'ñ') &&
-                !(src[i] == 'ó') &&
-                !(src[i] == 'œ') &&
-                !(src[i] == 'Ÿ') &&
-                !(src[i] == '¿') &&
-                !(src[i] == '¥') &&
-                !(src[i] == 'Æ') &&
-                !(src[i] == 'Ê') &&
-                !(src[i] == '£') &&
-                !(src[i] == 'Ñ') &&
-                !(src[i] == 'Ó') &&
-                !(src[i] == 'Œ') &&
-                !(src[i] == '') &&
-                !(src[i] == '¯') &&
-                !(src[i] == '?') &&
-                !(src[i] == ' '))
-                    goto loop;
 }
 
 void DeleteQuestionMark (std::string &src)
@@ -263,13 +158,12 @@ void DeleteQuestionMark (std::vector<std::string> &src)
     {
         trim (src[i]);
 
-        loop:
         for (unsigned int i2 = 0; i2 < src[i].length(); i2++)
             if (src[i][i2] == 63)
+            {
                 src[i].erase (i2, 1);
-        for (unsigned int i2 = 0; i2 < src[i].length(); i2++)
-            if (src[i][i2] == 63)
-                goto loop;
+                i2--;
+            }
     }
 }
 

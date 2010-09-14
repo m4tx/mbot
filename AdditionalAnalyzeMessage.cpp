@@ -50,6 +50,19 @@ bool VectSrch2 (std::vector<std::string> src, std::string text)
     return false;
 }
 
+bool VectSrch2AtEnd (std::vector<std::string> src, std::string text)
+{
+    int pos1;
+    for (unsigned int i = 0; i < src.size(); i++)
+    {
+        DeleteQuestionMark (src[i]);
+        pos1 = src[i].find(text, src[i].length() - text.length());
+        if (pos1 > -1)
+            return true;
+    }
+    return false;
+}
+
 std::string CalculateLifeExpectancy ()
 {
     time_t rawtime;
@@ -97,7 +110,7 @@ Dictionary = new std::string [1];
 Dictionary[0] = "Lingubot - program komputerowy symuluj¹cy cz³owieka, z którym mo¿na prowadziæ rozmowê przy u¿yciu jêzyka naturalnego i interfejsu tekstowego. Zazwyczaj zadaniem lingubota jest takie prowadzenie rozmowy, aby rozmowca odnosi³ wra¿enie, ¿e rozmawia z ¿ywym, inteligentnym czlowiekiem.";
 
     // Losowane teksty lingubota
-    ArraysSizes = new int [34];
+    ArraysSizes = new int [44];
     ArraysSizes[0] = 12;
     ArraysSizes[1] = 7;
     ArraysSizes[2] = 4;
@@ -131,9 +144,19 @@ Dictionary[0] = "Lingubot - program komputerowy symuluj¹cy cz³owieka, z którym m
     ArraysSizes[30] = 3;
     ArraysSizes[31] = 10;
     ArraysSizes[32] = 3;
-    ArraysSizes[33] = 3;
+    ArraysSizes[33] = 2;
+    ArraysSizes[34] = 2;
+    ArraysSizes[35] = 2;
+    ArraysSizes[36] = 2;
+    ArraysSizes[37] = 3;
+    ArraysSizes[38] = 3;
+    ArraysSizes[39] = 2;
+    ArraysSizes[40] = 12;
+    ArraysSizes[41] = 3;
+    ArraysSizes[42] = 2;
+    ArraysSizes[43] = 3;
 
-    Texts = new std::string *[34];
+    Texts = new std::string *[44];
     Texts[0] = new std::string [12];
     Texts[1] = new std::string [7];
     Texts[2] = new std::string [4];
@@ -168,6 +191,16 @@ Dictionary[0] = "Lingubot - program komputerowy symuluj¹cy cz³owieka, z którym m
     Texts[31] = new std::string [10];
     Texts[32] = new std::string [3];
     Texts[33] = new std::string [3];
+    Texts[34] = new std::string [2];
+    Texts[35] = new std::string [2];
+    Texts[36] = new std::string [2];
+    Texts[37] = new std::string [3];
+    Texts[38] = new std::string [3];
+    Texts[39] = new std::string [2];
+    Texts[40] = new std::string [12];
+    Texts[41] = new std::string [3];
+    Texts[42] = new std::string [2];
+    Texts[43] = new std::string [3];
 
     Texts[0][0] = "Witaj.";
     Texts[0][1] = "Witam.";
@@ -351,10 +384,54 @@ Dictionary[0] = "Lingubot - program komputerowy symuluj¹cy cz³owieka, z którym m
     Texts[33][0] = "Nie lubiê podró¿owaæ.";
     Texts[33][1] = "Nie mam zwyczaju podró¿owania po œwiecie.";
     Texts[33][2] = "Nie lubiê podró¿owania.";
+
+    Texts[34][0] = "A fuj, nienawidzê tego!";
+    Texts[34][1] = "A fuj, nienawidzê!";
+
+    Texts[35][0] = "Nienawidzê alkoholu!";
+    Texts[35][1] = "Nienawidzê picia alkoholu!";
+
+    Texts[36][0] = "Nienawidzê narkotyków!";
+    Texts[36][1] = "Nienawidzê ¿adnych narkotyków!";
+
+    Texts[37][0] = "Eee tam, nic ciekawego...";
+    Texts[37][1] = "Na Twoim dysku nie ma nic ciekawego...";
+    Texts[37][2] = "Na tym Twoim dysku nic fajnego nie znalaz³em.";
+
+    Texts[38][0] = "Nie wiem nic na ten temat.";
+    Texts[38][1] = "Nic nie wiem na ten temat.";
+    Texts[38][2] = "Ten temat jest mi obcy.";
+
+    Texts[39][0] = "Ja tak¿e.";
+    Texts[39][1] = "Ja równie¿.";
+
+    Texts[40][0] = "Oczywiœcie, pewnie ¿e znam.";
+    Texts[40][1] = "Oczywiœcie, znam!";
+    Texts[40][2] = "Pewnie, ¿e tak!";
+    Texts[40][3] = "No jasne, ¿e znam!";
+    Texts[40][4] = "No jasne, znam!";
+    Texts[40][5] = "No jasne!";
+    Texts[40][6] = "Tak.";
+    Texts[40][7] = "Tak, znam!";
+    Texts[40][9] = "Owszem!";
+    Texts[40][10] = "Nie.";
+    Texts[40][11] = "Nie znam.";
+
+    Texts[41][0] = "mBot to jest moje imiê, bardziej jednak nazwa.";
+    Texts[41][1] = "mBot to jest moje imiê, bardziej jednak pasuje tu s³owo nazwa.";
+    Texts[41][2] = "mBot to jest imiê, bardziej jednak pasuje tutaj s³owo nazwa.";
+
+    Texts[42][0] = "Tak, dok³adnie, a¿ mi³o wyjœæ na zewn¹trz!";
+    Texts[42][1] = "Tak, dok³adnie!";
+
+    Texts[43][0] = "No niestety!";
+    Texts[43][1] = "No có¿, niestety.";
+    Texts[43][2] = "Tak, szkoda.";
 }
 
 std::string RandomText (int Text)
 {
+    srand(time(0));
     return Texts[Text][rand() % ArraysSizes[Text]];
 }
 
